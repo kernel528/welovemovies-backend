@@ -38,3 +38,4 @@
 * 2.4.2 - Monthly Render database refresh and production redeploy runbook update.  2026-03-28
 * 2.4.3 - Monthly Render database refresh and production redeploy.  2026-05-01
 * 2.5.0 - Monthly Render database refresh automation, Postgres 18.4 cutover, and release workflow updates.  2026-06-05
+* 2.5.1 - Monthly Render database refresh and application repository reference updates.  2026-07-05

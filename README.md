@@ -1,17 +1,20 @@
-[![Latest Version](https://img.shields.io/github/v/tag/kernel528/WeLoveMovies)](https://github.com/kernel528/WeLoveMovies/releases/latest)
+[![Latest Version](https://img.shields.io/github/v/tag/kernel528/welovemovies-backend)](https://github.com/kernel528/welovemovies-backend/releases/latest)
 
 # Chegg Skills Back-end Web Development Capstone
 This repository contains the source code for the We Love Movies Capstone to the Chegg Skills Back-end Web Development Certificate Program.
 
 ## Current Baseline
 
-- Latest release: `2.5.0` (2026-06-05).
+- Latest release: `2.5.1` (2026-07-05).
+- Back-end repo: https://github.com/kernel528/welovemovies-backend
+- Front-end repo: https://github.com/kernel528/welovemovies-frontend
+- Local project root: `~/Projects/WeLoveMovies/`
 - Monthly operations runbook: `Monthly_Prod_Notes.md`.
 - Version history and release notes: `VERSION.md`.
 
 ### Front-end Setup
-- The starter-movie-front-end is a symlink in this repo to the fork from Chegg Skills located here: [starter-movie-frontend](https://github.com/kernel528/starter-movie-front-end). This was setup to test progress in addition to test cases.
-- Due to using the `qualified-attach` to sync local changes with qualified site, this previously defaulted to the `Final_Capstone_WeLoveMovies_Guild_Node_18_1` folder name before moving to repo root.
+- The front-end app now lives in the sibling repository `~/Projects/WeLoveMovies/welovemovies-frontend`.
+- Configure the front-end `REACT_APP_API_BASE_URL` to point at this deployed or local back-end API.
 
 ## Quickstart
 1. Install dependencies: `npm install`
@@ -34,7 +37,7 @@ Use `.env.sample` as the template for local and production-related environment v
 
 ## Project Structure
 ```plaintext
-WeLoveMovies/
+welovemovies-backend/
 ├── .env
 ├── .gitignore
 ├── knexfile.js
@@ -90,8 +93,6 @@ WeLoveMovies/
     ├── utils/
         ├── map-properties.js
         ├── reduce-properties.js
-├── starter-movie-front-end (symlink)
-├── starter-movie-front-end.old/
 └── test/
 ```
 
@@ -167,4 +168,4 @@ WeLoveMovies/
 - Validate with `npm test` and smoke checks before each monthly release PR.
 
 ## Implementation & Deployment Logs
-Detailed historical setup notes, route task logs, validation transcripts, and deployment steps are kept in `Capstone_Project_Logs.md`.
+Detailed historical setup notes, route task logs, validation transcripts, and deployment steps are kept in `docs/Capstone_Project_Logs.md`.

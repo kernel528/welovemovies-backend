@@ -1,7 +1,7 @@
 # We Love Movies
 
 ## Monthly Render DB Refresh Runbook
-Last updated: 2026-06-05
+Last updated: 2026-07-05
 
 ### Scope
 This runbook covers the monthly production refresh when Render free-tier Postgres is recreated, then migrations/seeds are reapplied, and both services are redeployed.
@@ -115,3 +115,4 @@ This runbook covers the monthly production refresh when Render free-tier Postgre
 - February 2026: v18.2 (monthly refresh + reseed)
 - March 2026: v18.3 (monthly refresh + reseed + runbook update)
 - June 2026: v18.4 (monthly refresh + automation + release 2.5.0)
+- July 2026: v18.4 (monthly refresh + validated release 2.5.1)
