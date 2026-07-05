@@ -29,21 +29,7 @@ The repo now includes portable Node/npm helpers for monthly maintenance.
 - `npm run monthly:verify` runs the refresh flow followed by smoke tests.
 - Set `SKIP_DOTENV=1` when you want to test the scripts without loading local `.env` values.
 
-Use `.env.sample` as the template for local and production-related environment variables.
-
-## Monthly Release SOP
-
-Use this as the short monthly release path. Keep `Monthly_Prod_Notes.md` as the detailed manual runbook reference.
-
-1. Recreate the Render Postgres 18.4 instance in the dashboard.
-2. Update local `.env` with the new `PRODUCTION_DATABASE_URL`.
-3. Update the Render back-end `PRODUCTION_DATABASE_URL` environment variable.
-4. Pause Render services before DB recreation, then resume/redeploy back-end first and front-end second.
-5. Run `npm run refresh:prod` to migrate, seed, and verify row counts.
-6. Validate the refreshed data in DBeaver and/or `psql` if desired.
-7. Run `APP_URL=https://kernel528-welovemovies.onrender.com npm run smoke:prod` or set `SMOKE_BASE_URL` for smoke testing.
-8. Watch Render logs for errors after deployment.
-9. Tag and publish the release when the refresh is complete.
+Use `.env.sample` as the template for local and production-related environment variables. For the full monthly release process, see `Monthly_Prod_Notes.md`.
 
 ## Project Structure
 ```plaintext
