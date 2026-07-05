@@ -29,13 +29,6 @@ This runbook covers the monthly production refresh when Render free-tier Postgre
 - [ ] Run `npm run smoke:prod`.
 - [ ] Watch Render logs.
 
-## Preflight Checklist
-1. Confirm current branch/commit for deployment.
-2. Confirm working app URL for smoke tests.
-3. Confirm access to encrypted credential notes.
-4. Confirm local repo has current dependencies (`npm install`) and `knex` scripts available.
-5. Pause front-end and back-end services in Render before DB deletion.
-
 ## Procedure
 1. Pause services in Render:
    - Suspend front-end and back-end first so no writes happen during DB recreation.
