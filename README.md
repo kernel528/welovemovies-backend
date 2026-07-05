@@ -27,6 +27,7 @@ The repo now includes portable Node/npm helpers for monthly maintenance.
 - `npm run refresh:prod` runs production migrations, seeds, and table-count validation.
 - `npm run smoke:prod` checks the deployed API using `APP_URL` or `SMOKE_BASE_URL`.
 - `npm run monthly:verify` runs the refresh flow followed by smoke tests.
+- `npm run release:bump -- --version x.y.z --summary "..."` updates release metadata and the API build banner.
 - Set `SKIP_DOTENV=1` when you want to test the scripts without loading local `.env` values.
 
 Use `.env.sample` as the template for local and production-related environment variables. For the full monthly release process, see `Monthly_Prod_Notes.md`.
@@ -142,7 +143,7 @@ WeLoveMovies/
 
 ### 3.1.0 - Release and Documentation Automation
 
-1. Add `scripts/release-bump.js` to update `package.json`, `package-lock.json`, `src/app.js`, and append `VERSION.md`.
+1. Added `scripts/release-bump.js` to update `package.json`, `package-lock.json`, `src/app.js`, `README.md`, and append `VERSION.md`.
 2. Add `scripts/monthly-notes-template.js` to append a dated maintenance entry to `Monthly_Prod_Notes.md`.
 3. Print a short post-run validation checklist at script completion.
 

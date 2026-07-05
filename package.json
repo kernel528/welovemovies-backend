@@ -10,6 +10,7 @@
     "docker:test": "docker run -t  thinkful-ed/zid-be-project-movie-01-qualified npm test",
     "knex": "knex",
     "migrate": "knex migrate:latest",
+    "release:bump": "node scripts/release-bump.js",
     "refresh:prod": "node scripts/monthly-refresh.js",
     "smoke:prod": "node scripts/smoke-prod.js",
     "monthly:verify": "npm run refresh:prod && npm run smoke:prod",
