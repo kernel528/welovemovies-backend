@@ -1,0 +1,14 @@
+.git
+.github
+.DS_Store
+.env
+.env.*
+.idea
+.vscode
+coverage
+downloads
+images
+node_modules
+npm-debug.log*
+ROADMAP.md
+*.zip
