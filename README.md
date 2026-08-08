@@ -35,6 +35,33 @@ The repo now includes portable Node/npm helpers for monthly maintenance.
 
 Use `.env.sample` as the template for local and production-related environment variables. For the full monthly release process, see `Monthly_Prod_Notes.md`.
 
+## Docker And CI
+
+Build and test the application in Docker with `npm run docker:test`. This runs
+the Jest/Supertest suite with the in-memory SQLite test database and requires no
+database credentials. Build the runtime image with `npm run docker:build`, run
+it locally with `npm run docker:run`, or build and smoke-test it with
+`npm run docker:smoke`.
+
+Drone runs Docker-based validation for pull requests targeting `dev` and
+`main`. A trusted push to `dev` publishes
+`kernel528/welovemovies-backend:dev-<commit>-drone-build-<number>` and
+`kernel528/welovemovies-backend:dev-latest`. A version tag on `main` publishes
+the version tag, an immutable commit/build tag, and `latest`, then invokes the
+Render production deploy hook.
+
+Configure these repository secrets in `drone.kernelsanders.biz`:
+
+- `docker_username`
+- `docker_password`
+- `slack_webhook_drone_alerts`
+- `render_deploy_hook`
+- `production_api_url`
+
+The Docker runner must be a trusted repository runner with access to
+`/var/run/docker.sock`. Test and pull-request pipelines do not receive database
+or Docker Hub credentials.
+
 ## Project Structure
 ```plaintext
 welovemovies-backend/

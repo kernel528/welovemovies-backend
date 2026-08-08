@@ -8,8 +8,10 @@ We Love Movies API through `drone.kernelsanders.biz` and Docker Hub.
 ## Delivery Policy
 
 1. Create `dev` from `main` before enabling feature work.
-2. Create feature branches from `dev` using the `dev/<feature>` convention.
-3. A pull request from `dev/<feature>` to `dev` runs the Drone validation
+2. Create feature branches from `dev` using the `feature/<feature>` convention.
+   Git cannot use `dev/<feature>` while a `dev` branch exists because branch
+   names share the same ref namespace.
+3. A pull request from `feature/<feature>` to `dev` runs the Drone validation
    pipeline. It must pass before review and merge.
 4. A merge into `dev` triggers a trusted development-image publish pipeline.
 5. A pull request from `dev` to `main` runs the same validation pipeline. It
@@ -106,7 +108,8 @@ credentials. This protects Docker Hub credentials from untrusted PR code.
 2. Configure repository secrets: `docker_username`, `docker_password`, and
    `slack_webhook_drone_alerts`.
 3. Add the Render deploy hook as a protected secret only if tag deployment is
-   not handled directly by Render's Git integration.
+   not handled directly by Render's Git integration, plus `production_api_url`
+   for post-deployment smoke checks.
 4. Confirm the Docker runner can access `/var/run/docker.sock` and is allowed
    to pull Node, Docker CLI, and curl test images.
 5. Configure GitHub branch protection for `dev` and `main` to require the
