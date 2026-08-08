@@ -1,10 +1,12 @@
 kind: pipeline
 type: docker
-name: validation
+name: backend-ci
 
 trigger:
   event:
     - pull_request
+    - push
+    - tag
   branch:
     - dev
     - main
@@ -15,99 +17,102 @@ volumes:
       path: /var/run/docker.sock
 
 steps:
-  - name: docker-test-build
+  - name: validation-docker-test-build
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - pull_request
     commands:
       - docker build --target test --tag welovemovies-backend:ci-${DRONE_COMMIT:0:8}-${DRONE_BUILD_NUMBER}-test .
 
-  - name: docker-runtime-build
+  - name: validation-docker-runtime-build
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - pull_request
     commands:
       - docker build --target runtime --tag welovemovies-backend:ci-${DRONE_COMMIT:0:8}-${DRONE_BUILD_NUMBER} .
 
-  - name: smoke-test
+  - name: validation-smoke-test
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - pull_request
     commands:
-      - docker run --detach --name welovemovies-backend-test-${DRONE_BUILD_NUMBER} --env NODE_ENV=test welovemovies-backend:ci-${DRONE_COMMIT:0:8}-${DRONE_BUILD_NUMBER}
+      - docker run --detach --name welovemovies-backend-validation-${DRONE_BUILD_NUMBER} --env NODE_ENV=test welovemovies-backend:ci-${DRONE_COMMIT:0:8}-${DRONE_BUILD_NUMBER}
       - |
         for _ in $(seq 1 15); do
-          if docker run --rm --network container:welovemovies-backend-test-${DRONE_BUILD_NUMBER} curlimages/curl:8.7.1 --fail http://localhost:5001/; then
+          if docker run --rm --network container:welovemovies-backend-validation-${DRONE_BUILD_NUMBER} curlimages/curl:8.7.1 --fail http://localhost:5001/; then
             exit 0
           fi
           sleep 1
         done
         exit 1
 
-  - name: smoke-test-cleanup
+  - name: validation-smoke-test-cleanup
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
     when:
+      event:
+        - pull_request
       status:
         - success
         - failure
     commands:
-      - docker rm --force welovemovies-backend-test-${DRONE_BUILD_NUMBER} || true
+      - docker rm --force welovemovies-backend-validation-${DRONE_BUILD_NUMBER} || true
 
-  - name: slack-notification
-    image: plugins/slack
-    settings: { webhook: { from_secret: slack_webhook_drone_alerts } }
-    when: { status: [success, failure] }
-
----
-
-kind: pipeline
-type: docker
-name: development-image
-
-trigger:
-  event:
-    - push
-  branch:
-    - dev
-
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
-
-steps:
-  - name: docker-test-build
+  - name: development-docker-test-build
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - push
+      branch:
+        - dev
     commands:
       - docker build --target test --tag welovemovies-backend:dev-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}-test .
 
-  - name: docker-runtime-build
+  - name: development-docker-runtime-build
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - push
+      branch:
+        - dev
     commands:
       - docker build --target runtime --tag welovemovies-backend:dev-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER} .
 
-  - name: smoke-test
+  - name: development-smoke-test
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - push
+      branch:
+        - dev
     commands:
-      - docker run --detach --name welovemovies-backend-test-${DRONE_BUILD_NUMBER} --env NODE_ENV=test welovemovies-backend:dev-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
+      - docker run --detach --name welovemovies-backend-development-${DRONE_BUILD_NUMBER} --env NODE_ENV=test welovemovies-backend:dev-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
       - |
         for _ in $(seq 1 15); do
-          if docker run --rm --network container:welovemovies-backend-test-${DRONE_BUILD_NUMBER} curlimages/curl:8.7.1 --fail http://localhost:5001/; then
+          if docker run --rm --network container:welovemovies-backend-development-${DRONE_BUILD_NUMBER} curlimages/curl:8.7.1 --fail http://localhost:5001/; then
             exit 0
           fi
           sleep 1
@@ -124,6 +129,11 @@ steps:
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - push
+      branch:
+        - dev
     commands:
       - printf '%s' "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
       - docker tag welovemovies-backend:dev-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER} kernel528/welovemovies-backend:dev-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
@@ -131,71 +141,66 @@ steps:
       - docker push kernel528/welovemovies-backend:dev-${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
       - docker push kernel528/welovemovies-backend:dev-latest
 
-  - name: smoke-test-cleanup
+  - name: development-smoke-test-cleanup
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
     when:
+      event:
+        - push
+      branch:
+        - dev
       status:
         - success
         - failure
     commands:
-      - docker rm --force welovemovies-backend-test-${DRONE_BUILD_NUMBER} || true
+      - docker rm --force welovemovies-backend-development-${DRONE_BUILD_NUMBER} || true
 
-  - name: slack-notification
-    image: plugins/slack
-    settings: { webhook: { from_secret: slack_webhook_drone_alerts } }
-    when: { status: [success, failure] }
-
----
-
-kind: pipeline
-type: docker
-name: release-image
-
-trigger:
-  event:
-    - tag
-
-volumes:
-  - name: docker_sock
-    host:
-      path: /var/run/docker.sock
-
-steps:
   - name: verify-main-release
     image: alpine/git:2.47.2
+    when:
+      event:
+        - tag
     commands:
       - git fetch origin main --depth=1
       - git merge-base --is-ancestor ${DRONE_COMMIT} origin/main
 
-  - name: docker-test-build
+  - name: release-docker-test-build
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - tag
     commands:
-      - docker build --target test --tag welovemovies-backend:${DRONE_TAG}-test .
+      - "docker build --target test --tag welovemovies-backend:${DRONE_TAG}-test ."
 
-  - name: docker-runtime-build
+  - name: release-docker-runtime-build
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - tag
     commands:
-      - docker build --target runtime --tag welovemovies-backend:${DRONE_TAG} .
+      - "docker build --target runtime --tag welovemovies-backend:${DRONE_TAG} ."
 
-  - name: smoke-test
+  - name: release-smoke-test
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - tag
     commands:
-      - docker run --detach --name welovemovies-backend-test-${DRONE_BUILD_NUMBER} --env NODE_ENV=test welovemovies-backend:${DRONE_TAG}
+      - "docker run --detach --name welovemovies-backend-release-${DRONE_BUILD_NUMBER} --env NODE_ENV=test welovemovies-backend:${DRONE_TAG}"
       - |
         for _ in $(seq 1 15); do
-          if docker run --rm --network container:welovemovies-backend-test-${DRONE_BUILD_NUMBER} curlimages/curl:8.7.1 --fail http://localhost:5001/; then
+          if docker run --rm --network container:welovemovies-backend-release-${DRONE_BUILD_NUMBER} curlimages/curl:8.7.1 --fail http://localhost:5001/; then
             exit 0
           fi
           sleep 1
@@ -212,20 +217,26 @@ steps:
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
+    when:
+      event:
+        - tag
     commands:
-      - printf '%s' "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
-      - docker tag welovemovies-backend:${DRONE_TAG} kernel528/welovemovies-backend:${DRONE_TAG}
-      - docker tag welovemovies-backend:${DRONE_TAG} kernel528/welovemovies-backend:${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
-      - docker tag welovemovies-backend:${DRONE_TAG} kernel528/welovemovies-backend:latest
-      - docker push kernel528/welovemovies-backend:${DRONE_TAG}
-      - docker push kernel528/welovemovies-backend:${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}
-      - docker push kernel528/welovemovies-backend:latest
+      - "printf '%s' \"$DOCKER_PASSWORD\" | docker login --username \"$DOCKER_USERNAME\" --password-stdin"
+      - "docker tag welovemovies-backend:${DRONE_TAG} kernel528/welovemovies-backend:${DRONE_TAG}"
+      - "docker tag welovemovies-backend:${DRONE_TAG} kernel528/welovemovies-backend:${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}"
+      - "docker tag welovemovies-backend:${DRONE_TAG} kernel528/welovemovies-backend:latest"
+      - "docker push kernel528/welovemovies-backend:${DRONE_TAG}"
+      - "docker push kernel528/welovemovies-backend:${DRONE_COMMIT:0:8}-drone-build-${DRONE_BUILD_NUMBER}"
+      - "docker push kernel528/welovemovies-backend:latest"
 
   - name: deploy-render-production
     image: curlimages/curl:8.7.1
     environment:
       RENDER_DEPLOY_HOOK:
         from_secret: render_deploy_hook
+    when:
+      event:
+        - tag
     commands:
       - curl --fail --request POST "$RENDER_DEPLOY_HOOK"
 
@@ -234,6 +245,9 @@ steps:
     environment:
       PRODUCTION_API_URL:
         from_secret: production_api_url
+    when:
+      event:
+        - tag
     commands:
       - |
         for _ in $(seq 1 30); do
@@ -244,19 +258,26 @@ steps:
         done
         exit 1
 
-  - name: smoke-test-cleanup
+  - name: release-smoke-test-cleanup
     image: docker:27-cli
     volumes:
       - name: docker_sock
         path: /var/run/docker.sock
     when:
+      event:
+        - tag
       status:
         - success
         - failure
     commands:
-      - docker rm --force welovemovies-backend-test-${DRONE_BUILD_NUMBER} || true
+      - docker rm --force welovemovies-backend-release-${DRONE_BUILD_NUMBER} || true
 
   - name: slack-notification
     image: plugins/slack
-    settings: { webhook: { from_secret: slack_webhook_drone_alerts } }
-    when: { status: [success, failure] }
+    when:
+      status:
+        - success
+        - failure
+    settings:
+      webhook:
+        from_secret: slack_webhook_drone_alerts
