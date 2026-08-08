@@ -61,13 +61,8 @@ steps:
 
   - name: slack-notification
     image: plugins/slack
-    settings:
-      webhook:
-        from_secret: slack_webhook_drone_alerts
-    when:
-      status:
-        - success
-        - failure
+    settings: { webhook: { from_secret: slack_webhook_drone_alerts } }
+    when: { status: [success, failure] }
 
 ---
 
@@ -150,13 +145,8 @@ steps:
 
   - name: slack-notification
     image: plugins/slack
-    settings:
-      webhook:
-        from_secret: slack_webhook_drone_alerts
-    when:
-      status:
-        - success
-        - failure
+    settings: { webhook: { from_secret: slack_webhook_drone_alerts } }
+    when: { status: [success, failure] }
 
 ---
 
@@ -268,10 +258,5 @@ steps:
 
   - name: slack-notification
     image: plugins/slack
-    settings:
-      webhook:
-        from_secret: slack_webhook_drone_alerts
-    when:
-      status:
-        - success
-        - failure
+    settings: { webhook: { from_secret: slack_webhook_drone_alerts } }
+    when: { status: [success, failure] }
