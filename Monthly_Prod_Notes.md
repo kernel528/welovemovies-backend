@@ -1,7 +1,7 @@
 # We Love Movies
 
 ## Monthly Render DB Refresh Runbook
-Last updated: 2026-08-02
+Last updated: 2026-08-09
 
 ### Scope
 This runbook covers the monthly production refresh when Render free-tier Postgres is recreated, then migrations/seeds are reapplied, and both services are redeployed.
@@ -24,12 +24,26 @@ This runbook covers the monthly production refresh when Render free-tier Postgre
 - [ ] Update the Render database and service environment variables manually in the dashboard.
 - [ ] Run `npm run refresh:prod`.
 - [ ] Validate production data in DBeaver and/or `psql`.
-- [ ] For the `2.5.4` through `2.5.6` poster patch series, verify refreshed
-  movie records `10`, `1`, and `8` use the approved replacement image URLs.
+- [ ] Verify Pan's Labyrinth, Spirited Away, and Up use their API-hosted poster
+  URLs after the refresh. Do not rely on numeric movie IDs, which can change
+  when the seed data is recreated.
 - [ ] Update the back-end Render `PRODUCTION_DATABASE_URL` env var.
 - [ ] Redeploy back-end, then front-end.
 - [ ] Run `npm run smoke:prod`.
 - [ ] Watch Render logs.
+
+### Optional Render MCP Read-Only Verification
+
+- [ ] Select the intended Render workspace and confirm the API, dashboard, and
+  Postgres resources.
+- [ ] Review the most recent backend and frontend deploys.
+- [ ] Query only time-bounded logs and metrics when investigating an issue.
+- [ ] Use only read-only SQL for database inspection.
+- [ ] Obtain explicit approval before triggering a deploy or changing an
+  environment variable through Render MCP.
+
+See `docs/render-mcp-operations.md` for the complete workflow and OpenCode
+activation instructions.
 
 ## Procedure
 1. Pause services in Render:

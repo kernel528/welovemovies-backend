@@ -44,3 +44,4 @@
 * 2.5.4 - Serve the Pan's Labyrinth poster from the API.  2026-08-09
 * 2.5.5 - Serve the Spirited Away poster from the API.  2026-08-09
 * 2.5.6 - Serve the Up poster from the API.  2026-08-09
+* 2.6.0 - Document read-only Render MCP operations.  2026-08-09
