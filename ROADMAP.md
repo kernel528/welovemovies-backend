@@ -11,6 +11,8 @@
 - Render deploys from its Git integration. The optional `render_deploy_hook`
   secret is used when configured; an unset hook is a successful no-op, allowing
   the tag pipeline to continue to its production API smoke test.
+- Production endpoints: API `https://kernel528-welovemovies.onrender.com/` and
+  dashboard `https://kernel528-welovemovies-dashboard.onrender.com/`.
 
 ## Roadmap Status
 
@@ -22,6 +24,7 @@
 | Poster fix: Spirited Away | Planned | `2.5.5`: replace movie `1` poster and validate the deployed detail page |
 | Poster fix: Up | Planned | `2.5.6`: replace movie `8` poster and validate the deployed detail page |
 | Refresh poster verification | Planned | Add the three poster checks to the Render refresh workflow after the patch series |
+| Render MCP review | Queued | Assess updated Render MCP capabilities after the shared reference is available |
 | Self-hosted production | Future | Evaluate a Docker host, TLS, monitoring, and rollback process |
 
 ## Delivery Policy
@@ -118,3 +121,6 @@ convenience tags, not a complete deployment record.
    domains, CORS policy, and operational runbook are verified.
 3. Continue monthly production database maintenance using the documented
    refresh and smoke-test process.
+4. Review the updated Render MCP server capabilities after the reference link is
+   provided, and decide whether they improve service inspection or deployment
+   verification for either application.
