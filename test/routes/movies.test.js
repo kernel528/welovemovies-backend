@@ -37,6 +37,15 @@ describe("Movie Routes", () => {
       expect(data).toHaveLength(16);
     });
 
+    test("serves the Pan's Labyrinth poster from the API", async () => {
+      const response = await request(app).get(
+        "/images/pans_labyrinth_poster.jpg"
+      );
+
+      expect(response.statusCode).toBe(200);
+      expect(response.headers["content-type"]).toMatch(/image\/jpeg/);
+    });
+
     test("should return active movies if `is_showing=true` is provided", async () => {
       // Set the first movie to be not showing
       const previous = await db("movies").first();
@@ -64,6 +73,17 @@ describe("Movie Routes", () => {
 
       expect(response.body.error).toBeUndefined();
       expect(response.body.data).toEqual(previous);
+    });
+
+    test("returns the API-hosted poster URL for Pan's Labyrinth", async () => {
+      const pan = await db("movies")
+        .where({ title: "Pan's Labyrinth" })
+        .first();
+      const response = await request(app).get(`/movies/${pan.movie_id}`);
+
+      expect(response.body.data.image_url).toBe(
+        "https://kernel528-welovemovies.onrender.com/images/pans_labyrinth_poster.jpg"
+      );
     });
 
     test("/theaters returns the theaters for the specified movie_id", async () => {

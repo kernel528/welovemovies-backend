@@ -29,6 +29,7 @@ ENV NODE_ENV=production
 COPY package.json package-lock.json ./
 COPY --from=runtime-dependencies /app/node_modules ./node_modules
 COPY knexfile.js ./
+COPY images/pans_labyrinth_poster.jpg ./images/pans_labyrinth_poster.jpg
 COPY src ./src
 
 USER node
