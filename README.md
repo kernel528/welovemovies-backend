@@ -5,7 +5,10 @@ This repository contains the source code for the We Love Movies Capstone to the 
 
 ## Current Baseline
 
-- Latest release: `2.5.3` (2026-08-08).
+- Latest release: `2.5.3` (2026-08-09).
+- Dependabot alerts: none open (verified 2026-08-09).
+- CI/CD status: Docker validation, development image publishing, tagged release
+  publishing, and Render production smoke checks are operational.
 - Back-end repo: https://github.com/kernel528/welovemovies-backend
 - Front-end repo: https://github.com/kernel528/welovemovies-frontend
 - Local project root: `~/Projects/WeLoveMovies/`
@@ -14,7 +17,7 @@ This repository contains the source code for the We Love Movies Capstone to the 
 
 ### Front-end Setup
 - The front-end app now lives in the sibling repository `~/Projects/WeLoveMovies/welovemovies-frontend`.
-- Configure the front-end `REACT_APP_API_BASE_URL` to point at this deployed or local back-end API.
+- Configure the front-end `VITE_API_BASE_URL` to point at this deployed or local back-end API.
 
 ## Quickstart
 1. Install dependencies: `npm install`
@@ -47,15 +50,15 @@ Drone runs Docker-based validation for pull requests targeting `dev` and
 `main`. A trusted push to `dev` publishes
 `kernel528/welovemovies-backend:dev-<commit>-drone-build-<number>` and
 `kernel528/welovemovies-backend:dev-latest`. A version tag on `main` publishes
-the version tag, an immutable commit/build tag, and `latest`, then invokes the
-Render production deploy hook.
+the version tag, an immutable commit/build tag, and `latest`; it posts to the
+optional Render deploy hook when configured and then verifies the production API.
 
 Configure these repository secrets in `drone.kernelsanders.biz`:
 
 - `docker_username`
 - `docker_password`
 - `slack_webhook_drone_alerts`
-- `render_deploy_hook`
+- `render_deploy_hook` (optional when Render deploys from Git)
 - `production_api_url`
 
 The Docker runner must be a trusted repository runner with access to
@@ -153,6 +156,10 @@ welovemovies-backend/
 
 ### Recent merged PRs (post-2.4.2)
 
+- `#67` security remediation release preparation: SQLite 6 and patched
+  transitive dependencies.
+- `#69` release metadata for `2.5.3`.
+- `#71` CI handling for Render Git-based deployment when no hook is configured.
 - `#49` release metadata bump and monthly refresh references for `2.4.3`.
 - `#46` Dependabot bump: `picomatch` to `2.3.2`.
 - `#47` Dependabot bump: `path-to-regexp` to `0.1.13`.
