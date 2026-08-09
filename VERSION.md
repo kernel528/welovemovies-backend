@@ -43,3 +43,4 @@
 * 2.5.3 - Patch release after backend security dependency remediation.  2026-08-08
 * 2.5.4 - Serve the Pan's Labyrinth poster from the API.  2026-08-09
 * 2.5.5 - Serve the Spirited Away poster from the API.  2026-08-09
+* 2.5.6 - Serve the Up poster from the API.  2026-08-09
