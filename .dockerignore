@@ -9,6 +9,7 @@ coverage
 downloads
 images/*
 !images/pans_labyrinth_poster.jpg
+!images/spirited_away_poster.jpg
 node_modules
 npm-debug.log*
 ROADMAP.md
