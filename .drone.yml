@@ -238,7 +238,12 @@ steps:
       event:
         - tag
     commands:
-      - curl --fail --request POST "$RENDER_DEPLOY_HOOK"
+      - |
+        if [ -z "$RENDER_DEPLOY_HOOK" ]; then
+          echo "Render deploy hook is not configured; skipping manual deploy."
+          exit 0
+        fi
+        curl --fail --request POST "$RENDER_DEPLOY_HOOK"
 
   - name: smoke-test-render-production
     image: curlimages/curl:8.7.1
