@@ -41,3 +41,4 @@
 * 2.5.1 - Monthly Render database refresh and application repository reference updates.  2026-07-05
 * 2.5.2 - Release bump to v2.5.2 https://github.com/kernel528/welovemovies-backend/releases/tag/2.5.2.  2026-08-01
 * 2.5.3 - Patch release after backend security dependency remediation.  2026-08-08
+* 2.5.4 - Serve the Pan's Labyrinth poster from the API.  2026-08-09
