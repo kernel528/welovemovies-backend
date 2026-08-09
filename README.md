@@ -5,7 +5,7 @@ This repository contains the source code for the We Love Movies Capstone to the 
 
 ## Current Baseline
 
-- Latest release: `2.5.4` (2026-08-09).
+- Latest release: `2.5.5` (2026-08-09).
 - Dependabot alerts: none open (verified 2026-08-09).
 - CI/CD status: Docker validation, development image publishing, tagged release
   publishing, and Render production smoke checks are operational.
