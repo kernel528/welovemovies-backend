@@ -5,7 +5,7 @@ This repository contains the source code for the We Love Movies Capstone to the 
 
 ## Current Baseline
 
-- Latest release: `2.5.2` (2026-08-01).
+- Latest release: `2.5.3` (2026-08-08).
 - Back-end repo: https://github.com/kernel528/welovemovies-backend
 - Front-end repo: https://github.com/kernel528/welovemovies-frontend
 - Local project root: `~/Projects/WeLoveMovies/`
