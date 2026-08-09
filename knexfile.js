@@ -28,9 +28,7 @@ module.exports = {
     seeds: {
       directory: path.join(__dirname, "src", "db", "seeds"),
     },
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    ssl: false,
   },
 
   development: {
@@ -43,9 +41,7 @@ module.exports = {
     seeds: {
       directory: path.join(__dirname, "src", "db", "seeds"),
     },
-    ssl: {
-      rejectUnauthorized: false,
-    },
+    ssl: false,
   },
 
   production: {
