@@ -24,6 +24,8 @@ This runbook covers the monthly production refresh when Render free-tier Postgre
 - [ ] Update the Render database and service environment variables manually in the dashboard.
 - [ ] Run `npm run refresh:prod`.
 - [ ] Validate production data in DBeaver and/or `psql`.
+- [ ] For the `2.5.4` through `2.5.6` poster patch series, verify refreshed
+  movie records `10`, `1`, and `8` use the approved replacement image URLs.
 - [ ] Update the back-end Render `PRODUCTION_DATABASE_URL` env var.
 - [ ] Redeploy back-end, then front-end.
 - [ ] Run `npm run smoke:prod`.
@@ -77,10 +79,12 @@ This runbook covers the monthly production refresh when Render free-tier Postgre
    Expected: `Ran 6 seed files`.
 7. Validate production DB data:
    - Use DBeaver and/or `psql` with the new `External URL`.
-   - Validate key table counts:
-     - `movies`
-     - `theaters`
-     - `reviews`
+    - Validate key table counts:
+      - `movies`
+      - `theaters`
+      - `reviews`
+    - For the poster patch series, verify the seeded `image_url` values for
+      movies `10` (Pan's Labyrinth), `1` (Spirited Away), and `8` (Up).
 8. Update Render back-end environment variable:
    - In back-end service environment, set `PRODUCTION_DATABASE_URL` to the new DB `External URL`.
    - Confirm there is no typo or stale host/database name.
@@ -94,10 +98,15 @@ This runbook covers the monthly production refresh when Render free-tier Postgre
    - `GET /theaters`
    - `GET /movies/:movieId/reviews` (example: `/movies/1/reviews`)
    - `GET /not-a-route` (confirm 404 handler behavior)
-2. Watch Render logs for 10-15 minutes:
-   - DB connection errors
-   - Migration/seed related startup errors
-   - Elevated 5xx responses
+  2. Watch Render logs for 10-15 minutes:
+    - DB connection errors
+    - Migration/seed related startup errors
+    - Elevated 5xx responses
+3. After the poster patch series is deployed, load these frontend detail pages
+   and confirm each poster resolves:
+   - `/movies/10` (Pan's Labyrinth)
+   - `/movies/1` (Spirited Away)
+   - `/movies/8` (Up)
 
 ## Rollback Plan
 1. Pause front-end and back-end.
