@@ -2,7 +2,7 @@
 
 ## Current State
 
-- Latest release: `2.5.3`, published from `main` on 2026-08-09.
+- Latest release: `2.5.6`, published from `main` on 2026-08-09.
 - Node `22.15.0` is pinned for local and Docker builds.
 - Dependabot has no open alerts as of 2026-08-09.
 - Drone validates pull requests with Docker test and runtime builds plus an API
@@ -20,10 +20,8 @@
 | --- | --- | --- |
 | Delivery foundation | Complete | `2.5.3`: Docker, Drone, tagged releases, and production smoke checks |
 | Tag reconciliation | Complete | Local `2.5.1` now matches the accurate remote release tag at `25c18fb` |
-| Poster fix: Pan's Labyrinth | Planned | `2.5.4`: replace movie `10` poster and validate the deployed detail page |
-| Poster fix: Spirited Away | Planned | `2.5.5`: replace movie `1` poster and validate the deployed detail page |
-| Poster fix: Up | Planned | `2.5.6`: replace movie `8` poster and validate the deployed detail page |
-| Refresh poster verification | Planned | Add the three poster checks to the Render refresh workflow after the patch series |
+| Poster remediation | Complete | `2.5.4` through `2.5.6`: API-hosted assets for Pan's Labyrinth, Spirited Away, and Up; production reseeded and dashboard rendering verified |
+| Automated poster refresh verification | Future | Add asset and seeded URL checks to the production refresh/smoke workflow |
 | Render MCP review | Queued | Assess updated Render MCP capabilities after the shared reference is available |
 | Self-hosted production | Future | Evaluate a Docker host, TLS, monitoring, and rollback process |
 
@@ -64,35 +62,16 @@
 - The lockfile is reproducible with `npm ci`; the current dependency graph has
   no open Dependabot alerts.
 
-## Scheduled Patch Releases
+## Completed Poster Remediation
 
-### `2.5.4`: Pan's Labyrinth Poster
-
-1. Replace movie `10`'s historical image URL in `src/db/seeds/01_movies.js`.
-2. Confirm the approved replacement loads in the deployed frontend at
-   `/movies/10` after the reseed and redeploy.
-3. A researched Wikimedia candidate returned HTTP 200 on 2026-08-09:
-   `https://upload.wikimedia.org/wikipedia/en/6/67/Pan%27s_Labyrinth.jpg`.
-
-### `2.5.5`: Spirited Away Poster
-
-1. Replace movie `1`'s historical image URL in `src/db/seeds/01_movies.js`.
-2. Confirm the approved replacement loads in the deployed frontend at
-   `/movies/1` after the reseed and redeploy.
-3. A researched Wikimedia candidate returned HTTP 200 on 2026-08-09:
-   `https://upload.wikimedia.org/wikipedia/en/d/db/Spirited_Away_Japanese_poster.png`.
-
-### `2.5.6`: Up Poster And Refresh Verification
-
-1. Replace movie `8`'s historical image URL in `src/db/seeds/01_movies.js`.
-2. Confirm the approved replacement loads in the deployed frontend at
-   `/movies/8` after the reseed and redeploy.
-3. Add movies `10`, `1`, and `8` to the Render refresh poster-validation steps.
-4. A researched Wikimedia candidate returned HTTP 200 on 2026-08-09:
-   `https://upload.wikimedia.org/wikipedia/en/0/05/Up_%282009_film%29.jpg`.
-
-These candidates are research inputs only. Confirm source terms, licensing, and
-hotlinking suitability before committing any replacement image URL.
+- `2.5.4` adds `pans_labyrinth_poster.jpg`, `2.5.5` adds
+  `spirited_away_poster.jpg`, and `2.5.6` adds `up_poster.jpg`.
+- Each asset is served from the API's `/images` route, allowlisted in the Docker
+  build context, and copied into the production runtime image.
+- The affected seed records reference the API-hosted URLs. Run
+  `npm run refresh:prod` after deploying a seed change so production receives
+  the new URL; numeric movie IDs are not stable across reseeds.
+- Jest/Supertest regression coverage verifies each asset endpoint and seed URL.
 
 ## Image Tags
 
@@ -121,6 +100,8 @@ convenience tags, not a complete deployment record.
    domains, CORS policy, and operational runbook are verified.
 3. Continue monthly production database maintenance using the documented
    refresh and smoke-test process.
-4. Review the updated Render MCP server capabilities after the reference link is
+4. Add automated production checks for the poster asset endpoints and seeded
+   URLs to the refresh/smoke workflow.
+5. Review the updated Render MCP server capabilities after the reference link is
    provided, and decide whether they improve service inspection or deployment
    verification for either application.
