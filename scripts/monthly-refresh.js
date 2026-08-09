@@ -4,13 +4,31 @@ if (!process.env.SKIP_DOTENV) {
   require("dotenv").config();
 }
 
-process.env.NODE_ENV = "production";
-process.env.PGSSLMODE = process.env.PGSSLMODE || "no-verify";
+const environment = process.argv[2] || "production";
+const databaseEnvVars = {
+  development: "DEVELOPMENT_DATABASE_URL",
+  production: "PRODUCTION_DATABASE_URL",
+};
 
-const requiredEnvVars = ["PRODUCTION_DATABASE_URL"];
+const databaseEnvVar = databaseEnvVars[environment];
+
+process.env.NODE_ENV = environment;
+if (environment === "production") {
+  process.env.PGSSLMODE = process.env.PGSSLMODE || "no-verify";
+} else {
+  delete process.env.PGSSLMODE;
+}
+
+const requiredEnvVars = [databaseEnvVar];
 const tablesToCount = ["movies", "theaters", "reviews", "critics", "movies_theaters"];
 
 function validateEnvironment() {
+  if (!databaseEnvVar) {
+    throw new Error(
+      `Unsupported environment "${environment}". Use development or production.`
+    );
+  }
+
   const missing = requiredEnvVars.filter((name) => !process.env[name]);
 
   if (missing.length > 0) {
@@ -56,7 +74,7 @@ async function main() {
 
     await logTableCounts(knex);
 
-    console.log("Monthly refresh completed successfully.");
+    console.log(`${environment} refresh completed successfully.`);
   } catch (error) {
     console.error(error.message);
     process.exitCode = 1;
