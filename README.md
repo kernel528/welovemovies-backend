@@ -21,7 +21,8 @@ This repository contains the source code for the We Love Movies Capstone to the 
 
 ## Quickstart
 1. Install dependencies: `npm install`
-2. Configure environment: set `DATABASE_URL` (and `NODE_ENV=development` for local).
+2. Configure environment: set the appropriate `LOCAL_DATABASE_URL`,
+   `DEVELOPMENT_DATABASE_URL`, or `PRODUCTION_DATABASE_URL` in `.env`.
 3. Create schema and seed data: `npm run migrate` then `npm run seed`
 4. Start the API: `npm run start:dev`
 5. Verify: open `http://localhost:5001/movies`
@@ -31,12 +32,18 @@ This repository contains the source code for the We Love Movies Capstone to the 
 The repo now includes portable Node/npm helpers for monthly maintenance.
 
 - `npm run refresh:prod` runs production migrations, seeds, and table-count validation.
+- `npm run refresh:dev` runs the same workflow against
+  `DEVELOPMENT_DATABASE_URL` (the `jedi` development database).
 - `npm run smoke:prod` checks the deployed API using `APP_URL` or `SMOKE_BASE_URL`.
 - `npm run monthly:verify` runs the refresh flow followed by smoke tests.
 - `npm run release:bump -- --version x.y.z --summary "..."` updates release metadata and the API build banner.
 - Set `SKIP_DOTENV=1` when you want to test the scripts without loading local `.env` values.
 
 Use `.env.sample` as the template for local and production-related environment variables. For the full monthly release process, see `Monthly_Prod_Notes.md`.
+
+`npm run refresh:dev` clears and reseeds the development data, including the
+poster URLs in `src/db/seeds/01_movies.js`. Run it only when replacing the
+current development dataset.
 
 ## Docker And CI
 
