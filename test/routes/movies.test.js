@@ -46,6 +46,15 @@ describe("Movie Routes", () => {
       expect(response.headers["content-type"]).toMatch(/image\/jpeg/);
     });
 
+    test("serves the Spirited Away poster from the API", async () => {
+      const response = await request(app).get(
+        "/images/spirited_away_poster.jpg"
+      );
+
+      expect(response.statusCode).toBe(200);
+      expect(response.headers["content-type"]).toMatch(/image\/jpeg/);
+    });
+
     test("should return active movies if `is_showing=true` is provided", async () => {
       // Set the first movie to be not showing
       const previous = await db("movies").first();
@@ -83,6 +92,19 @@ describe("Movie Routes", () => {
 
       expect(response.body.data.image_url).toBe(
         "https://kernel528-welovemovies.onrender.com/images/pans_labyrinth_poster.jpg"
+      );
+    });
+
+    test("returns the API-hosted poster URL for Spirited Away", async () => {
+      const spiritedAway = await db("movies")
+        .where({ title: "Spirited Away" })
+        .first();
+      const response = await request(app).get(
+        `/movies/${spiritedAway.movie_id}`
+      );
+
+      expect(response.body.data.image_url).toBe(
+        "https://kernel528-welovemovies.onrender.com/images/spirited_away_poster.jpg"
       );
     });
 
