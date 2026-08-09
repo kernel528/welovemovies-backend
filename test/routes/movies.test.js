@@ -55,6 +55,13 @@ describe("Movie Routes", () => {
       expect(response.headers["content-type"]).toMatch(/image\/jpeg/);
     });
 
+    test("serves the Up poster from the API", async () => {
+      const response = await request(app).get("/images/up_poster.jpg");
+
+      expect(response.statusCode).toBe(200);
+      expect(response.headers["content-type"]).toMatch(/image\/jpeg/);
+    });
+
     test("should return active movies if `is_showing=true` is provided", async () => {
       // Set the first movie to be not showing
       const previous = await db("movies").first();
@@ -105,6 +112,15 @@ describe("Movie Routes", () => {
 
       expect(response.body.data.image_url).toBe(
         "https://kernel528-welovemovies.onrender.com/images/spirited_away_poster.jpg"
+      );
+    });
+
+    test("returns the API-hosted poster URL for Up", async () => {
+      const up = await db("movies").where({ title: "Up" }).first();
+      const response = await request(app).get(`/movies/${up.movie_id}`);
+
+      expect(response.body.data.image_url).toBe(
+        "https://kernel528-welovemovies.onrender.com/images/up_poster.jpg"
       );
     });
 
