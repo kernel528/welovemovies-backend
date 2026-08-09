@@ -13,7 +13,11 @@ const databaseEnvVars = {
 const databaseEnvVar = databaseEnvVars[environment];
 
 process.env.NODE_ENV = environment;
-process.env.PGSSLMODE = process.env.PGSSLMODE || "no-verify";
+if (environment === "production") {
+  process.env.PGSSLMODE = process.env.PGSSLMODE || "no-verify";
+} else {
+  delete process.env.PGSSLMODE;
+}
 
 const requiredEnvVars = [databaseEnvVar];
 const tablesToCount = ["movies", "theaters", "reviews", "critics", "movies_theaters"];

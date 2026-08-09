@@ -33,7 +33,7 @@ The repo now includes portable Node/npm helpers for monthly maintenance.
 
 - `npm run refresh:prod` runs production migrations, seeds, and table-count validation.
 - `npm run refresh:dev` runs the same workflow against
-  `DEVELOPMENT_DATABASE_URL` (the `jedi` development database).
+  `DEVELOPMENT_DATABASE_URL` (the non-SSL `jedi` development database).
 - `npm run smoke:prod` checks the deployed API using `APP_URL` or `SMOKE_BASE_URL`.
 - `npm run monthly:verify` runs the refresh flow followed by smoke tests.
 - `npm run release:bump -- --version x.y.z --summary "..."` updates release metadata and the API build banner.
