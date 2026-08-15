@@ -6,6 +6,27 @@ Last updated: 2026-08-09
 ### Scope
 This runbook covers the monthly production refresh when Render free-tier Postgres is recreated, then migrations/seeds are reapplied, and both services are redeployed.
 
+## Monthly Development And Production Refresh Plan
+
+1. **Preflight both environments.** Confirm the target database, current
+   branch and commit, credential access, and expected table counts with
+   read-only MCP or SQL inspection. Record the baseline without exposing
+   connection strings or secrets.
+2. **Refresh development first.** Obtain approval for the destructive refresh,
+   run `npm run refresh:dev`, then validate migrations, seeds, expected table
+   counts, and local tests before any production action.
+3. **Approve each production mutation.** Use Render MCP only for read-only
+   preflight. Before deleting or creating a database, updating credentials or
+   environment variables, refreshing data, or triggering a deploy, state the
+   target and obtain explicit approval for that individual action.
+4. **Refresh and validate production.** After approval, recreate the database
+   if required, run `npm run refresh:prod`, verify table counts and seeded
+   poster URLs, then redeploy the backend followed by the dashboard and run
+   `npm run smoke:prod`.
+5. **Close out.** Inspect time-bounded logs and metrics, record final resource
+   IDs, counts, release and deploy SHAs, and the rollback target in the
+   encrypted credential record and refresh history.
+
 ### Services
 - Front-end: [kernel528-WeLoveMovies-front-end](https://dashboard.render.com/web/srv-cu61j7l6l47c73btue80)
 - Back-end: [kernel528-WeLoveMovies-back-end](https://dashboard.render.com/web/srv-cu60jl56l47c73btmg3g)
