@@ -4,6 +4,12 @@ if (!process.env.SKIP_DOTENV) {
   require("dotenv").config();
 }
 
+const posterChecks = [
+  { title: "Pan's Labyrinth", path: "/images/pans_labyrinth_poster.jpg" },
+  { title: "Spirited Away", path: "/images/spirited_away_poster.jpg" },
+  { title: "Up", path: "/images/up_poster.jpg" },
+];
+
 function getBaseUrl() {
   const baseUrl = process.env.APP_URL || process.env.SMOKE_BASE_URL;
 
@@ -27,6 +33,23 @@ async function checkEndpoint(baseUrl, path, expectedStatus) {
   return response;
 }
 
+async function checkPosterAssets(baseUrl, movies) {
+  for (const poster of posterChecks) {
+    const movie = movies.find(({ title }) => title === poster.title);
+    const imageUrl = `${baseUrl}${poster.path}`;
+
+    if (!movie) {
+      throw new Error(`GET /movies did not include ${poster.title}.`);
+    }
+
+    if (movie.image_url !== imageUrl) {
+      throw new Error(`${poster.title} has an unexpected image URL.`);
+    }
+
+    await checkEndpoint(baseUrl, poster.path, 200);
+  }
+}
+
 async function main() {
   try {
     const baseUrl = getBaseUrl();
@@ -43,6 +66,7 @@ async function main() {
     await checkEndpoint(baseUrl, "/theaters", 200);
     await checkEndpoint(baseUrl, `/movies/${movieId}/reviews`, 200);
     await checkEndpoint(baseUrl, "/not-a-route", 404);
+    await checkPosterAssets(baseUrl, movies.data);
 
     console.log("Smoke tests completed successfully.");
   } catch (error) {

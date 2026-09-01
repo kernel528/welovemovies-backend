@@ -2,7 +2,7 @@
 
 ## Current State
 
-- Latest release: `2.5.6`, published from `main` on 2026-08-09.
+- Latest release: `2.6.0`, tagged from `main` on 2026-08-15.
 - Node `22.15.0` is pinned for local and Docker builds.
 - Dependabot has no open alerts as of 2026-08-09.
 - Drone validates pull requests with Docker test and runtime builds plus an API
@@ -21,8 +21,8 @@
 | Delivery foundation | Complete | `2.5.3`: Docker, Drone, tagged releases, and production smoke checks |
 | Tag reconciliation | Complete | Local `2.5.1` now matches the accurate remote release tag at `25c18fb` |
 | Poster remediation | Complete | `2.5.4` through `2.5.6`: API-hosted assets for Pan's Labyrinth, Spirited Away, and Up; production reseeded and dashboard rendering verified |
-| Automated poster refresh verification | Future | Add asset and seeded URL checks to the production refresh/smoke workflow |
-| Render MCP review | Queued | Assess updated Render MCP capabilities after the shared reference is available |
+| Automated poster refresh verification | In progress | Add asset and seeded URL checks to the production refresh/smoke workflow |
+| Render MCP review | Complete | Read-only workspace, service, deploy, logs, metrics, and Postgres inspection verified |
 | Self-hosted production | Future | Evaluate a Docker host, TLS, monitoring, and rollback process |
 
 ## Delivery Policy
@@ -100,8 +100,5 @@ convenience tags, not a complete deployment record.
    domains, CORS policy, and operational runbook are verified.
 3. Continue monthly production database maintenance using the documented
    refresh and smoke-test process.
-4. Add automated production checks for the poster asset endpoints and seeded
-   URLs to the refresh/smoke workflow.
-5. Review the updated Render MCP server capabilities after the reference link is
-   provided, and decide whether they improve service inspection or deployment
-   verification for either application.
+4. Complete the in-progress automated production checks for poster asset
+   endpoints and seeded URLs in the refresh/smoke workflow.
