@@ -141,8 +141,8 @@ async function main() {
 
   const nextAppText = replaceOnce(
     appText,
-    /Build: v\d+\.\d+\.\d+, using Node\.js, Express, and PostgreSQL v18\.4/, 
-    `Build: v${version}, using Node.js, Express, and PostgreSQL v18.4`,
+    /Build: v\d+\.\d+\.\d+, using Node\.js, Express, and PostgreSQL v18\.6/,
+    `Build: v${version}, using Node.js, Express, and PostgreSQL v18.6`,
     "app build banner"
   );
 

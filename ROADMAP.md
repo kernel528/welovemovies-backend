@@ -2,7 +2,7 @@
 
 ## Current State
 
-- Latest release: `2.6.0`, tagged from `main` on 2026-08-15.
+- Latest release: `2.6.1`, prepared from `dev` on 2026-09-01.
 - Node `22.15.0` is pinned for local and Docker builds.
 - Dependabot has no open alerts as of 2026-08-09.
 - Drone validates pull requests with Docker test and runtime builds plus an API
@@ -21,7 +21,7 @@
 | Delivery foundation | Complete | `2.5.3`: Docker, Drone, tagged releases, and production smoke checks |
 | Tag reconciliation | Complete | Local `2.5.1` now matches the accurate remote release tag at `25c18fb` |
 | Poster remediation | Complete | `2.5.4` through `2.5.6`: API-hosted assets for Pan's Labyrinth, Spirited Away, and Up; production reseeded and dashboard rendering verified |
-| Automated poster refresh verification | In progress | Add asset and seeded URL checks to the production refresh/smoke workflow |
+| Automated poster refresh verification | Complete | Production smoke verifies poster assets and title-based seeded URLs |
 | Render MCP review | Complete | Read-only workspace, service, deploy, logs, metrics, and Postgres inspection verified |
 | Self-hosted production | Future | Evaluate a Docker host, TLS, monitoring, and rollback process |
 
