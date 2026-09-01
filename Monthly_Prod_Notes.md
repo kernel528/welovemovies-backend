@@ -1,7 +1,7 @@
 # We Love Movies
 
 ## Monthly Render DB Refresh Runbook
-Last updated: 2026-08-09
+Last updated: 2026-09-01
 
 ### Scope
 This runbook covers the monthly production refresh when Render free-tier Postgres is recreated, then migrations/seeds are reapplied, and both services are redeployed.
@@ -28,9 +28,9 @@ This runbook covers the monthly production refresh when Render free-tier Postgre
    encrypted credential record and refresh history.
 
 ### Services
-- Front-end: [kernel528-WeLoveMovies-front-end](https://dashboard.render.com/web/srv-cu61j7l6l47c73btue80)
+- Front-end: [kernel528-welovemovies-dashboard](https://kernel528-welovemovies-dashboard.onrender.com/)
 - Back-end: [kernel528-WeLoveMovies-back-end](https://dashboard.render.com/web/srv-cu60jl56l47c73btmg3g)
-- Database: [WeLoveMoviesDB](https://dashboard.render.com/d/dpg-cv1kpfhu0jms738j2da0-a)
+- Database: [kernel528-welovemovies-pg18](https://dashboard.render.com/d/dpg-dab1tqf40ujc739j561g-a)
 
 ## Quick Monthly Refresh Checklist
 
@@ -118,8 +118,8 @@ activation instructions.
       - `movies`
       - `theaters`
       - `reviews`
-    - For the poster patch series, verify the seeded `image_url` values for
-      movies `10` (Pan's Labyrinth), `1` (Spirited Away), and `8` (Up).
+     - For the poster patch series, locate Pan's Labyrinth, Spirited Away, and
+       Up by title, then verify their seeded `image_url` values.
 8. Update Render back-end environment variable:
    - In back-end service environment, set `PRODUCTION_DATABASE_URL` to the new DB `External URL`.
    - Confirm there is no typo or stale host/database name.
@@ -131,17 +131,15 @@ activation instructions.
 1. Smoke test API endpoints:
    - `GET /movies`
    - `GET /theaters`
-   - `GET /movies/:movieId/reviews` (example: `/movies/1/reviews`)
+    - `GET /movies/:movieId/reviews` for a current movie with reviews
    - `GET /not-a-route` (confirm 404 handler behavior)
   2. Watch Render logs for 10-15 minutes:
     - DB connection errors
     - Migration/seed related startup errors
     - Elevated 5xx responses
-3. After the poster patch series is deployed, load these frontend detail pages
-   and confirm each poster resolves:
-   - `/movies/10` (Pan's Labyrinth)
-   - `/movies/1` (Spirited Away)
-   - `/movies/8` (Up)
+3. After the poster patch series is deployed, locate Pan's Labyrinth, Spirited
+   Away, and Up from the movie list and confirm each detail page resolves its
+   poster. Do not rely on numeric movie IDs after a reseed.
 
 ## Rollback Plan
 1. Pause front-end and back-end.
@@ -161,3 +159,4 @@ activation instructions.
 - June 2026: v18.4 (monthly refresh + automation + release 2.5.0)
 - July 2026: v18.4 (monthly refresh + validated release 2.5.1)
 - August 2026: v18.4 (postgres refresh + reseed + smoke validated; deployment target release 2.5.2)
+- September 2026: v18.6 (monthly refresh + reseed + backend and dashboard smoke validated)
