@@ -4,7 +4,8 @@
 
 - Latest release: `2.6.1`, prepared from `dev` on 2026-09-01.
 - Node `22.15.0` is pinned for local and Docker builds.
-- Dependabot has no open alerts as of 2026-08-09.
+- The Dependabot Express 5 update is deferred until its route compatibility
+  migration is complete.
 - Drone validates pull requests with Docker test and runtime builds plus an API
   smoke test. Trusted `dev` pushes publish development images; annotated tags on
   `main` publish versioned production images.
@@ -23,6 +24,7 @@
 | Poster remediation | Complete | `2.5.4` through `2.5.6`: API-hosted assets for Pan's Labyrinth, Spirited Away, and Up; production reseeded and dashboard rendering verified |
 | Automated poster refresh verification | Complete | Production smoke verifies poster assets and title-based seeded URLs |
 | Render MCP review | Complete | Read-only workspace, service, deploy, logs, metrics, and Postgres inspection verified |
+| Express 5 compatibility upgrade | Planned | Migrate route patterns and validate the Dependabot Express 5 security update |
 | Self-hosted production | Future | Evaluate a Docker host, TLS, monitoring, and rollback process |
 
 ## Delivery Policy
@@ -59,8 +61,25 @@
 ### Security Maintenance
 
 - Backend dependency remediation was released in `2.5.3`.
-- The lockfile is reproducible with `npm ci`; the current dependency graph has
-  no open Dependabot alerts.
+- The lockfile is reproducible with `npm ci`; the dependency graph had no open
+  Dependabot alerts as of 2026-08-09.
+
+### Planned Express 5 Compatibility Upgrade
+
+The Dependabot update from Express 4 to Express 5 introduces
+`path-to-regexp` v8 route syntax. Complete this phase before merging the
+security update:
+
+1. Replace bare wildcard route segments with named wildcards. In particular,
+   change the `/movies/:movieId/*` catch-all to use a named parameter such as
+   `/movies/:movie_id/*splat`.
+2. Audit all application route patterns and error handlers against the Express
+   5 migration guidance; preserve the current HTTP status and response bodies.
+3. Add regression coverage for an unknown nested movie path returning `404`.
+4. Update the Express dependency and lockfile only after the compatibility
+   changes are in place, then run `npm test -- --runInBand`,
+   `npm run docker:test`, `npm run docker:build`, and the production smoke
+   suite before approving the Dependabot PR.
 
 ## Completed Poster Remediation
 
@@ -100,5 +119,5 @@ convenience tags, not a complete deployment record.
    domains, CORS policy, and operational runbook are verified.
 3. Continue monthly production database maintenance using the documented
    refresh and smoke-test process.
-4. Complete the in-progress automated production checks for poster asset
-   endpoints and seeded URLs in the refresh/smoke workflow.
+4. Complete the planned Express 5 compatibility upgrade before merging the
+   Dependabot security update.
