@@ -124,16 +124,27 @@ describe("Movie Routes", () => {
       );
     });
 
-    test("/theaters returns the theaters for the specified movie_id", async () => {
-      const previous = await db("movies").first();
+    test("/theaters returns only the theaters for the specified movie_id", async () => {
+      const movie = await db("movies").first();
+      const theater = await db("theaters").where({ name: "Hollywood Theatre" }).first();
+
+      await db("movies_theaters")
+        .where({ movie_id: movie.movie_id })
+        .whereNot({ theater_id: theater.theater_id })
+        .del();
 
       const response = await request(app).get(
-        `/movies/${previous.movie_id}/theaters`
+        `/movies/${movie.movie_id}/theaters`
       );
 
       expect(response.body.error).toBeUndefined();
-      expect(response.body.data[0]).toHaveProperty("name", "Regal City Center");
-      expect(response.body.data).toHaveLength(3);
+      expect(response.body.data).toEqual([
+        expect.objectContaining({
+          name: "Hollywood Theatre",
+          movie_id: movie.movie_id,
+          is_showing: true,
+        }),
+      ]);
     });
 
     test("GET `/movies/:movieId/reviews` returns the reviews, with critic property, for the specified movie_id", async () => {
