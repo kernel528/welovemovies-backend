@@ -14,7 +14,7 @@ COPY . ./
 
 ENV NODE_ENV=test
 
-RUN npm test -- --runInBand
+RUN npm run test:coverage
 
 FROM test AS runtime-dependencies
 
