@@ -35,7 +35,11 @@ The repo now includes portable Node/npm helpers for monthly maintenance.
 - `npm run refresh:dev` runs the same workflow against
   `DEVELOPMENT_DATABASE_URL` (the non-SSL `jedi` development database).
 - `npm run smoke:prod` checks the deployed API using `APP_URL` or `SMOKE_BASE_URL`.
-- `npm run monthly:verify` runs the refresh flow followed by smoke tests.
+- `npm run monthly:cleanup-images` removes old, unused Docker Hub image tags for
+  both WeLoveMovies services, while retaining `latest`, `dev-latest`, and all
+  in-use images.
+- `npm run monthly:verify` runs the refresh flow, production smoke tests, and
+  the local image cleanup step.
 - `npm run release:bump -- --version x.y.z --summary "..."` updates release metadata and the API build banner.
 - Set `SKIP_DOTENV=1` when you want to test the scripts without loading local `.env` values.
 
