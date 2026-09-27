@@ -86,14 +86,23 @@ npm run swarm:dev-deploy
 
 The command loads `DEVELOPMENT_DATABASE_URL` from the ignored `.env`, deploys
 `swarm.dev.yml` as the `welovemovies-dev` stack, and always resolves the image
-tags from Docker Hub. The API is published at `http://jedi:5001`; the dashboard
-is published at `http://jedi:3002`.
+tags from Docker Hub. The API is published at `http://192.168.1.5:5001`; the dashboard
+is published at `http://192.168.1.5:3002`.
 
 The dashboard image must have been published with
-`VITE_API_BASE_URL=http://jedi:5001`, because Vite embeds that value at image
+`VITE_API_BASE_URL=http://192.168.1.5:5001`, because Vite embeds that value at image
 build time. By default the stack uses both `dev-latest` images. Override either
 image for a pinned deployment with `SWARM_API_IMAGE` or
 `SWARM_DASHBOARD_IMAGE` in the environment or local `.env`.
+
+Remove the Swarm deployment with:
+
+```bash
+npm run swarm:dev-destroy
+```
+
+This removes only the `welovemovies-dev` stack. It does not remove Docker images
+or the shared development database.
 
 ## Project Structure
 ```plaintext
