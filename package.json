@@ -1,6 +1,6 @@
 {
   "name": "project-movie-back-end",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "description": "zid-be-project-movie-01-qualified",
   "main": "src/app.js",
   "scripts": {
@@ -24,9 +24,9 @@
     "start:dev": "nodemon src/server.js",
     "swarm:dev-destroy": "node scripts/swarm-dev-destroy.js",
     "swarm:dev-deploy": "node scripts/swarm-dev-deploy.js",
-    "start:solution": "docker-compose up --build",
+    "swarm:dev-verify": "node scripts/swarm-dev-verify.js",
     "test": "jest",
-    "test:solution": "docker-compose build && docker-compose run --rm api npm test && docker-compose down"
+    "test:coverage": "jest --coverage --runInBand"
   },
   "keywords": [],
   "author": "",
@@ -52,5 +52,15 @@
     "brace-expansion": "1.1.18",
     "js-yaml": "3.15.2",
     "qs": "6.16.0"
+  },
+  "jest": {
+    "coverageThreshold": {
+      "global": {
+        "branches": 60,
+        "functions": 90,
+        "lines": 90,
+        "statements": 90
+      }
+    }
   }
 }

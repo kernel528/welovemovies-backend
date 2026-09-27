@@ -5,7 +5,7 @@ This repository contains the source code for the We Love Movies Capstone to the 
 
 ## Current Baseline
 
-- Latest release: `2.6.1` (2026-09-01).
+- Latest release: `2.7.0` (2026-09-27).
 - Dependabot alerts: none open (verified 2026-08-09).
 - CI/CD status: Docker validation, development image publishing, tagged release
   publishing, and Render production smoke checks are operational.
@@ -55,7 +55,8 @@ Build and test the application in Docker with `npm run docker:test`. This runs
 the Jest/Supertest suite with the in-memory SQLite test database and requires no
 database credentials. Build the runtime image with `npm run docker:build`, run
 it locally with `npm run docker:run`, or build and smoke-test it with
-`npm run docker:smoke`.
+`npm run docker:smoke`. Run `npm run test:coverage` to enforce the backend
+coverage baseline.
 
 Drone runs Docker-based validation for pull requests targeting `dev` and
 `main`. A trusted push to `dev` publishes
@@ -82,6 +83,7 @@ From `jedi`, deploy the dashboard and API development images with:
 
 ```bash
 npm run swarm:dev-deploy
+npm run swarm:dev-verify
 ```
 
 The command loads `DEVELOPMENT_DATABASE_URL` from the ignored `.env`, deploys
@@ -94,6 +96,10 @@ The dashboard image must have been published with
 build time. By default the stack uses both `dev-latest` images. Override either
 image for a pinned deployment with `SWARM_API_IMAGE` or
 `SWARM_DASHBOARD_IMAGE` in the environment or local `.env`.
+
+`swarm:dev-verify` requires both services to be at `1/1`, checks the API movie
+response, and confirms the dashboard bundle targets `SWARM_API_URL`. Set
+`SWARM_API_URL` or `SWARM_DASHBOARD_URL` when verifying a non-default LAN host.
 
 Remove the Swarm deployment with:
 
