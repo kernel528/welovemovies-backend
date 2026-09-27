@@ -1,7 +1,7 @@
 # We Love Movies
 
 ## Monthly Render DB Refresh Runbook
-Last updated: 2026-09-01
+Last updated: 2026-09-27
 
 ### Scope
 This runbook covers the monthly production refresh when Render free-tier Postgres is recreated, then migrations/seeds are reapplied, and both services are redeployed.
@@ -30,7 +30,7 @@ This runbook covers the monthly production refresh when Render free-tier Postgre
 ### Services
 - Front-end: [kernel528-welovemovies-dashboard](https://kernel528-welovemovies-dashboard.onrender.com/)
 - Back-end: [kernel528-WeLoveMovies-back-end](https://dashboard.render.com/web/srv-cu60jl56l47c73btmg3g)
-- Database: [kernel528-welovemovies-pg18](https://dashboard.render.com/d/dpg-dab1tqf40ujc739j561g-a)
+- Database: [kernel528-welovemovies-pg18](https://dashboard.render.com/d/dpg-das8d2h7lnhs738243o0-a)
 
 ## Quick Monthly Refresh Checklist
 
@@ -42,14 +42,18 @@ This runbook covers the monthly production refresh when Render free-tier Postgre
 - [ ] Recreate the Render Postgres database and capture the new connection details.
 - [ ] Update the encrypted credential store with the new DB entry.
 - [ ] Update local `.env` with the new `PRODUCTION_DATABASE_URL`.
-- [ ] Update the Render database and service environment variables manually in the dashboard.
+- [ ] Update the Render backend environment: `PRODUCTION_DATABASE_URL` to the
+  new External URL, `NODE_ENV=production`, and `PGSSLMODE=no-verify`.
 - [ ] Run `npm run refresh:prod`.
 - [ ] Validate production data in DBeaver and/or `psql`.
 - [ ] Verify Pan's Labyrinth, Spirited Away, and Up use their API-hosted poster
   URLs after the refresh. Do not rely on numeric movie IDs, which can change
   when the seed data is recreated.
-- [ ] Update the back-end Render `PRODUCTION_DATABASE_URL` env var.
-- [ ] Redeploy back-end, then front-end.
+- [ ] Verify the backend environment variables are present without displaying
+  their values.
+- [ ] Resume and redeploy the back-end; do not rely on resume alone after a
+  database credential change.
+- [ ] Resume and redeploy the front-end after the backend is healthy.
 - [ ] Run `npm run smoke:prod`.
 - [ ] Watch Render logs.
 
@@ -121,11 +125,17 @@ activation instructions.
      - For the poster patch series, locate Pan's Labyrinth, Spirited Away, and
        Up by title, then verify their seeded `image_url` values.
 8. Update Render back-end environment variable:
-   - In back-end service environment, set `PRODUCTION_DATABASE_URL` to the new DB `External URL`.
-   - Confirm there is no typo or stale host/database name.
+   - In the back-end service environment, set `PRODUCTION_DATABASE_URL` to the
+     new DB `External URL`, `NODE_ENV=production`, and
+     `PGSSLMODE=no-verify`.
+   - Confirm the variables exist without displaying their values. The backend
+     is in Oregon and the database is in Ohio, so it uses the external URL and
+     requires TLS.
 9. Redeploy in order:
-   - Resume back-end service and run `Clear build cache & deploy`.
-   - After back-end is healthy, resume front-end and run `Clear build cache & deploy`.
+   - Resume the back-end service, then redeploy it. Saving environment
+     variables can trigger the deploy automatically; otherwise run `Clear
+     build cache & deploy`. Do not treat a service resume as sufficient.
+   - After the back-end is healthy, resume and redeploy the front-end.
 
 ## Post-Deploy Validation
 1. Smoke test API endpoints:
@@ -159,4 +169,6 @@ activation instructions.
 - June 2026: v18.4 (monthly refresh + automation + release 2.5.0)
 - July 2026: v18.4 (monthly refresh + validated release 2.5.1)
 - August 2026: v18.4 (postgres refresh + reseed + smoke validated; deployment target release 2.5.2)
-- September 2026: v18.6 (monthly refresh + reseed + backend and dashboard smoke validated)
+- September 2026: PostgreSQL 18 replacement `dpg-das8d2h7lnhs738243o0-a`
+  (development and production reseeded; backend external-TLS configuration,
+  redeploy, dashboard resume, and smoke validation completed)
