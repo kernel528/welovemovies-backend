@@ -35,7 +35,11 @@ The repo now includes portable Node/npm helpers for monthly maintenance.
 - `npm run refresh:dev` runs the same workflow against
   `DEVELOPMENT_DATABASE_URL` (the non-SSL `jedi` development database).
 - `npm run smoke:prod` checks the deployed API using `APP_URL` or `SMOKE_BASE_URL`.
-- `npm run monthly:verify` runs the refresh flow followed by smoke tests.
+- `npm run monthly:cleanup-images` removes old, unused Docker Hub image tags for
+  both WeLoveMovies services, while retaining `latest`, `dev-latest`, and all
+  in-use images.
+- `npm run monthly:verify` runs the refresh flow, production smoke tests, and
+  the local image cleanup step.
 - `npm run release:bump -- --version x.y.z --summary "..."` updates release metadata and the API build banner.
 - Set `SKIP_DOTENV=1` when you want to test the scripts without loading local `.env` values.
 
@@ -71,6 +75,25 @@ Configure these repository secrets in `drone.kernelsanders.biz`:
 The Docker runner must be a trusted repository runner with access to
 `/var/run/docker.sock`. Test and pull-request pipelines do not receive database
 or Docker Hub credentials.
+
+## Sandersnetwork Swarm Deployment
+
+From `jedi`, deploy the dashboard and API development images with:
+
+```bash
+npm run swarm:dev-deploy
+```
+
+The command loads `DEVELOPMENT_DATABASE_URL` from the ignored `.env`, deploys
+`swarm.dev.yml` as the `welovemovies-dev` stack, and always resolves the image
+tags from Docker Hub. The API is published at `http://jedi:5001`; the dashboard
+is published at `http://jedi:3002`.
+
+The dashboard image must have been published with
+`VITE_API_BASE_URL=http://jedi:5001`, because Vite embeds that value at image
+build time. By default the stack uses both `dev-latest` images. Override either
+image for a pinned deployment with `SWARM_API_IMAGE` or
+`SWARM_DASHBOARD_IMAGE` in the environment or local `.env`.
 
 ## Project Structure
 ```plaintext

@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  api:
+    image: ${SWARM_API_IMAGE}
+    environment:
+      NODE_ENV: development
+      DEVELOPMENT_DATABASE_URL: ${DEVELOPMENT_DATABASE_URL}
+    ports:
+      - target: 5001
+        published: 5001
+        protocol: tcp
+        mode: ingress
+    networks:
+      - welovemovies
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      update_config:
+        order: start-first
+
+  dashboard:
+    image: ${SWARM_DASHBOARD_IMAGE}
+    ports:
+      - target: 80
+        published: 3002
+        protocol: tcp
+        mode: ingress
+    networks:
+      - welovemovies
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+      update_config:
+        order: start-first
+
+networks:
+  welovemovies:
+    driver: overlay
