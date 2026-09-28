@@ -5,7 +5,7 @@ This repository contains the source code for the We Love Movies Capstone to the 
 
 ## Current Baseline
 
-- Latest release: `2.7.0` (2026-09-27).
+- Next release: `3.0.0` (prepared 2026-09-28).
 - Dependabot alerts: none open (verified 2026-08-09).
 - CI/CD status: Docker validation, development image publishing, tagged release
   publishing, and Render production smoke checks are operational.
@@ -14,6 +14,8 @@ This repository contains the source code for the We Love Movies Capstone to the 
 - Local project root: `~/Projects/WeLoveMovies/`
 - Monthly operations runbook: `Monthly_Prod_Notes.md`.
 - Version history and release notes: `VERSION.md`.
+- `3.0.0` upgrades the API to Express 5 while preserving the JSON route and
+  error-response contract used by the frontend.
 
 ### Front-end Setup
 - The front-end app now lives in the sibling repository `~/Projects/WeLoveMovies/welovemovies-frontend`.

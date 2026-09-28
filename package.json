@@ -1,6 +1,6 @@
 {
   "name": "project-movie-back-end",
-  "version": "2.7.0",
+  "version": "3.0.0",
   "description": "zid-be-project-movie-01-qualified",
   "main": "src/app.js",
   "scripts": {
@@ -34,7 +34,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.22.2",
+    "express": "^5.2.1",
     "knex": "2.4.0",
     "morgan": "^1.12.0",
     "nvm": "^0.0.4",
