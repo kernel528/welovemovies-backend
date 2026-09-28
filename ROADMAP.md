@@ -2,7 +2,7 @@
 
 ## Current State
 
-- Latest release: `2.6.1`, prepared from `dev` on 2026-09-01.
+- Next release: `3.0.0`, prepared from `dev` on 2026-09-28.
 - Node `22.15.0` is pinned for local and Docker builds.
 - The Dependabot Express 5 update is deferred until its route compatibility
   migration is complete.
@@ -24,7 +24,7 @@
 | Poster remediation | Complete | `2.5.4` through `2.5.6`: API-hosted assets for Pan's Labyrinth, Spirited Away, and Up; production reseeded and dashboard rendering verified |
 | Automated poster refresh verification | Complete | Production smoke verifies poster assets and title-based seeded URLs |
 | Render MCP review | Complete | Read-only workspace, service, deploy, logs, metrics, and Postgres inspection verified |
-| Express 5 compatibility upgrade | Planned | Migrate route patterns and validate the Dependabot Express 5 security update |
+| Express 5 compatibility upgrade | Complete | `3.0.0`: named wildcard routes, nested-route JSON 404 coverage, and Express 5 validation |
 | Self-hosted production | Future | Evaluate a Docker host, TLS, monitoring, and rollback process |
 
 ## Delivery Policy
