@@ -47,3 +47,4 @@
 * 2.6.0 - Document read-only Render MCP operations.  2026-08-09
 * 2.6.1 - Monthly Render PostgreSQL 18.6 refresh, production smoke verification, and poster checks.  2026-09-01
 * 2.7.0 - Swarm verification and movie theater route corrections.  2026-09-27
+* 3.0.0 - Upgrade to Express 5 with named nested wildcard routes and JSON 404 regression coverage.  2026-09-28

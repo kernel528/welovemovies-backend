@@ -21,8 +21,8 @@ router
 router
     .use("/:movie_id/reviews", controller.movieExists, reviewsRouter);
 
-// Catch all unhandled routes for /movies/:movieId/*
-router.all("/:movieId/*", (req, res) => {
+// Express 5 requires a named wildcard for nested catch-all routes.
+router.all("/:movie_id/*splat", (req, res) => {
     res.status(404).json({ error: "Not found" });
 });
 

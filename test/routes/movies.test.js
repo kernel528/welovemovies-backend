@@ -179,5 +179,16 @@ describe("Movie Routes", () => {
       expect(response.body.error).toBeDefined();
       expect(response.statusCode).toBe(404);
     });
+
+    test("returns JSON 404 for deeper unknown movie routes", async () => {
+      const previous = await db("movies").first();
+
+      const response = await request(app).get(
+        `/movies/${previous.movie_id}/unknown/deeper`
+      );
+
+      expect(response.statusCode).toBe(404);
+      expect(response.body).toEqual({ error: "Not found" });
+    });
   });
 });
