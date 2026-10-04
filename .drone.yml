@@ -255,8 +255,9 @@ steps:
         - tag
     commands:
       - |
+        production_api_url="${PRODUCTION_API_URL:-https://kernel528-welovemovies.onrender.com}"
         for _ in $(seq 1 30); do
-          if curl --fail --silent --show-error "${PRODUCTION_API_URL%/}/"; then
+          if curl --fail --silent --show-error "${production_api_url%/}/"; then
             exit 0
           fi
           sleep 10
