@@ -7,7 +7,8 @@ This repository contains the source code for the We Love Movies Capstone to the 
 
 - Release status: `3.0.0` is merged to `dev` and `main`; the annotated version
   tag is pending.
-- Dependabot alerts: none open (verified 2026-08-09).
+- Dependabot alerts: 3 open in `package-lock.json` (1 high and 2 moderate);
+  review them before the `3.0.0` tag.
 - CI/CD status: Docker validation, development image publishing, tagged release
   publishing, and Render production smoke checks are operational.
 - Back-end repo: https://github.com/kernel528/welovemovies-backend
