@@ -62,8 +62,9 @@
 ### Security Maintenance
 
 - Backend dependency remediation was released in `2.5.3`.
-- The lockfile is reproducible with `npm ci`; the dependency graph had no open
-  Dependabot alerts as of 2026-08-09.
+- The lockfile is reproducible with `npm ci`. As of 2026-09-28, GitHub reports
+  three open Dependabot alerts in `package-lock.json` (one high, two moderate)
+  that require review before the `3.0.0` production tag.
 
 ## Completed Poster Remediation
 
