@@ -5,8 +5,10 @@ This repository contains the source code for the We Love Movies Capstone to the 
 
 ## Current Baseline
 
-- Next release: `3.0.0` (prepared 2026-09-28).
-- Dependabot alerts: none open (verified 2026-08-09).
+- Release status: `3.0.0` is merged to `dev` and `main`; the annotated version
+  tag is pending.
+- Dependabot alerts: 3 open in `package-lock.json` (1 high and 2 moderate);
+  review them before the `3.0.0` tag.
 - CI/CD status: Docker validation, development image publishing, tagged release
   publishing, and Render production smoke checks are operational.
 - Back-end repo: https://github.com/kernel528/welovemovies-backend
@@ -213,40 +215,9 @@ welovemovies-backend/
 - `#48` Dependabot bump: `lodash` to `4.18.1`.
 - `#44` Dependabot bump: `minimatch` to `3.1.5`.
 
-## v3 Automation Roadmap
+## Automation Follow-up
 
-### 3.0.0 - Monthly Refresh Automation Foundation
-
-1. Add `.env.example` with required variables for local, development, and production operations.
-2. Add `scripts/refresh-prod-db.js` for production-targeted migrate/seed with required env flags.
-3. Add `scripts/smoke-prod.js` to validate deployed API endpoints and fail fast on unexpected responses.
-4. Add npm scripts for one-command execution (for example: `refresh:prod`, `smoke:prod`, `monthly:verify`).
-5. Expand this README with an automation section that separates manual Render steps from scriptable local steps.
-
-### 3.1.0 - Release and Documentation Automation
-
-1. Added `scripts/release-bump.js` to update `package.json`, `package-lock.json`, `src/app.js`, `README.md`, and append `VERSION.md`.
-2. Add `scripts/monthly-notes-template.js` to append a dated maintenance entry to `Monthly_Prod_Notes.md`.
-3. Print a short post-run validation checklist at script completion.
-
-### 3.2.0 - CI Guardrails
-
-1. Add a manual GitHub Actions workflow (`workflow_dispatch`) to run smoke tests against deployed API URL.
-2. Add CI job to run `npm test` on PRs that change routes/controllers/services.
-3. Add a lightweight consistency check for synchronized version references.
-
-### 3.3.0 - Optional Quality of Life
-
-1. Add script preflight checks for required tools (`node`, `npm`, `knex`, `curl`).
-2. Improve script error messages for DB connectivity and SSL negotiation issues.
-3. Evaluate explicit production migration control to avoid accidental migration behavior at startup.
-
-## Working Rules for v3 Work
-
-- Keep scripts idempotent where practical.
-- Keep secrets out of source control; use `.env` and Render environment variables.
-- Update docs in the same PR as script changes.
-- Validate with `npm test` and smoke checks before each monthly release PR.
+Future automation and CI improvements are tracked in `ROADMAP.md`.
 
 ## Implementation & Deployment Logs
 Detailed historical setup notes, route task logs, validation transcripts, and deployment steps are kept in `docs/Capstone_Project_Logs.md`.
