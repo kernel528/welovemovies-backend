@@ -2,10 +2,11 @@
 
 ## Current State
 
-- Next release: `3.0.0`, prepared from `dev` on 2026-09-28.
+- Release status: `3.0.0` is merged to `dev` and `main`; the annotated version
+  tag is pending.
 - Node `22.15.0` is pinned for local and Docker builds.
-- The Dependabot Express 5 update is deferred until its route compatibility
-  migration is complete.
+- Express 5 compatibility is merged to `dev` and `main`; `3.0.0` remains
+  untagged.
 - Drone validates pull requests with Docker test and runtime builds plus an API
   smoke test. Trusted `dev` pushes publish development images; annotated tags on
   `main` publish versioned production images.
@@ -64,23 +65,6 @@
 - The lockfile is reproducible with `npm ci`; the dependency graph had no open
   Dependabot alerts as of 2026-08-09.
 
-### Planned Express 5 Compatibility Upgrade
-
-The Dependabot update from Express 4 to Express 5 introduces
-`path-to-regexp` v8 route syntax. Complete this phase before merging the
-security update:
-
-1. Replace bare wildcard route segments with named wildcards. In particular,
-   change the `/movies/:movieId/*` catch-all to use a named parameter such as
-   `/movies/:movie_id/*splat`.
-2. Audit all application route patterns and error handlers against the Express
-   5 migration guidance; preserve the current HTTP status and response bodies.
-3. Add regression coverage for an unknown nested movie path returning `404`.
-4. Update the Express dependency and lockfile only after the compatibility
-   changes are in place, then run `npm test -- --runInBand`,
-   `npm run docker:test`, `npm run docker:build`, and the production smoke
-   suite before approving the Dependabot PR.
-
 ## Completed Poster Remediation
 
 - `2.5.4` adds `pans_labyrinth_poster.jpg`, `2.5.5` adds
@@ -119,5 +103,3 @@ convenience tags, not a complete deployment record.
    domains, CORS policy, and operational runbook are verified.
 3. Continue monthly production database maintenance using the documented
    refresh and smoke-test process.
-4. Complete the planned Express 5 compatibility upgrade before merging the
-   Dependabot security update.
