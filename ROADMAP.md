@@ -2,11 +2,11 @@
 
 ## Current State
 
-- Release status: `3.0.0` is merged to `dev` and `main`; the annotated version
-  tag is pending.
+- Release status: `3.0.4` is tagged from `main`; Docker publication, Render
+  deployment, and production API smoke validation passed.
 - Node `22.15.0` is pinned for local and Docker builds.
-- Express 5 compatibility is merged to `dev` and `main`; `3.0.0` remains
-  untagged.
+- Express 5 compatibility and release-pipeline hardening are verified in the
+  `3.0.4` release.
 - Drone validates pull requests with Docker test and runtime builds plus an API
   smoke test. Trusted `dev` pushes publish development images; annotated tags on
   `main` publish versioned production images.
@@ -25,7 +25,7 @@
 | Poster remediation | Complete | `2.5.4` through `2.5.6`: API-hosted assets for Pan's Labyrinth, Spirited Away, and Up; production reseeded and dashboard rendering verified |
 | Automated poster refresh verification | Complete | Production smoke verifies poster assets and title-based seeded URLs |
 | Render MCP review | Complete | Read-only workspace, service, deploy, logs, metrics, and Postgres inspection verified |
-| Express 5 compatibility upgrade | Complete | `3.0.0`: named wildcard routes, nested-route JSON 404 coverage, and Express 5 validation |
+| Express 5 compatibility and release verification | Complete | `3.0.4`: named wildcard routes, nested-route JSON 404 coverage, Docker publication, Render deployment, and production smoke validation |
 | Self-hosted production | Future | Evaluate a Docker host, TLS, monitoring, and rollback process |
 
 ## Delivery Policy
@@ -61,10 +61,8 @@
 
 ### Security Maintenance
 
-- Backend dependency remediation was released in `2.5.3`.
-- The lockfile is reproducible with `npm ci`. As of 2026-09-28, GitHub reports
-  three open Dependabot alerts in `package-lock.json` (one high, two moderate)
-  that require review before the `3.0.0` production tag.
+- Backend dependency remediation includes the patched `brace-expansion` 1.1.21
+  override. The lockfile remains reproducible with `npm ci`.
 
 ## Completed Poster Remediation
 
@@ -92,7 +90,6 @@ convenience tags, not a complete deployment record.
 ## Required Drone Configuration
 
 - `docker_username`, `docker_password`, and `slack_webhook_drone_alerts`
-- `production_api_url` for the post-deployment smoke test
 - `render_deploy_hook` only when a manual Render deploy is required
 - Trusted repository access to `/var/run/docker.sock`
 
