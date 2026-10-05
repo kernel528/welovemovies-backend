@@ -95,9 +95,16 @@ convenience tags, not a complete deployment record.
 
 ## Future Work
 
-1. Evaluate a self-hosted production Docker platform with TLS, monitoring,
-   backups, deployment readiness checks, and rollback procedures.
-2. Complete a staged Render-to-self-hosted cutover only after the target API
-   domains, CORS policy, and operational runbook are verified.
-3. Continue monthly production database maintenance using the documented
+1. Replace the manually deployed `welovemovies-dev` stack with the
+   Portainer-managed `welovemovies` stack from
+   `docker-swarm/stacks/welovemovies-stack.yml`, using independently pinned
+   backend and frontend image versions.
+2. Add local reverse-proxy, TLS, and DNSexit records for
+   `welovemovies-backend-dev.kernelsanders.biz`, then verify that the dashboard
+   development image targets the matching API endpoint.
+3. Promote verified immutable images to a local production stack at
+   `welovemovies-backend.kernelsanders.biz` before replacing the Render API.
+4. Complete a staged Render-to-self-hosted cutover only after CORS, monitoring,
+   backups, deployment readiness checks, and rollback procedures are verified.
+5. Continue monthly production database maintenance using the documented
    refresh and smoke-test process.
