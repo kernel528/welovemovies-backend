@@ -2,8 +2,8 @@
 
 ## Current State
 
-- Release status: `3.0.4` is tagged from `main`; the `3.0.5` security patch is
-  prepared for review and tagging.
+- Release status: `3.0.5` is tagged; the production database has been refreshed
+  and reseeded for the `3.0.6` monthly release. Service redeployment is pending.
 - Node `22.23.4` is pinned for local and Docker builds.
 - Express 5 compatibility and release-pipeline hardening are verified in the
   `3.0.4` release.
@@ -26,7 +26,8 @@
 | Automated poster refresh verification | Complete | Production smoke verifies poster assets and title-based seeded URLs |
 | Render MCP review | Complete | Read-only workspace, service, deploy, logs, metrics, and Postgres inspection verified |
 | Express 5 compatibility and release verification | Complete | `3.0.4`: named wildcard routes, nested-route JSON 404 coverage, Docker publication, Render deployment, and production smoke validation |
-| Node.js and dependency security patch | In progress | `3.0.5`: Node.js `22.23.4`, refreshed CA store, patched dependencies, and production redeployment |
+| Node.js and dependency security patch | Complete | `3.0.5`: Node.js `22.23.4`, refreshed CA store, patched dependencies, and production smoke verification before the monthly DB rollover |
+| Monthly PostgreSQL refresh | In progress | `3.0.6`: PostgreSQL 18.6 replacement `dpg-dbed893rjlhs73faub1g-a`, migrations/seeds validated; production service cutover pending |
 | Self-hosted production | Future | Evaluate a Docker host, TLS, monitoring, and rollback process |
 
 ## Delivery Policy
