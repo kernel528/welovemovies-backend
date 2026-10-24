@@ -24,7 +24,8 @@ a Docker image; no PHP runtime was found.
    deployed Node.js runtime.
 
 Local Docker runtime build, application smoke test, backend tests, and
-`npm audit` have passed. Release `3.0.5` is tagged and the security-updated
-runtime was verified on Render. The October monthly refresh replaced and
-reseeded production Postgres as `dpg-dbed893rjlhs73faub1g-a`; service cutover is
-pending in the separate `3.0.6` monthly release process.
+`npm audit` have passed. Release `3.0.5` was verified on Render, followed by the
+monthly PostgreSQL 18.6 refresh and the `3.0.6` release. Replacement database
+`dpg-dbed893rjlhs73faub1g-a` was migrated, seeded, and validated. The backend
+and dashboard are live on `3.0.6`; production API and dashboard smoke checks
+passed.
