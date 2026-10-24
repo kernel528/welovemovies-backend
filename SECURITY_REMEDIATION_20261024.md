@@ -24,5 +24,6 @@ a Docker image; no PHP runtime was found.
    deployed Node.js runtime.
 
 Local Docker runtime build, application smoke test, backend tests, and
-`npm audit` have passed. Production deployment has not been performed as part of
-this remediation.
+`npm audit` have passed. Render production is live on the security-updated main
+commit. The follow-up `3.0.5` release bump and tag are tracked separately; the
+monthly PostgreSQL refresh remains a subsequent operation.
