@@ -4,7 +4,7 @@
 
 - Release status: `3.0.4` is tagged from `main`; Docker publication, Render
   deployment, and production API smoke validation passed.
-- Node `22.15.0` is pinned for local and Docker builds.
+- Node `22.23.4` is pinned for local and Docker builds.
 - Express 5 compatibility and release-pipeline hardening are verified in the
   `3.0.4` release.
 - Drone validates pull requests with Docker test and runtime builds plus an API
