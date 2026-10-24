@@ -1,7 +1,7 @@
 # We Love Movies
 
 ## Monthly Render DB Refresh Runbook
-Last updated: 2026-09-27
+Last updated: 2026-10-24
 
 ### Scope
 This runbook covers the monthly production refresh when Render free-tier Postgres is recreated, then migrations/seeds are reapplied, and both services are redeployed.
@@ -30,7 +30,7 @@ This runbook covers the monthly production refresh when Render free-tier Postgre
 ### Services
 - Front-end: [kernel528-welovemovies-dashboard](https://kernel528-welovemovies-dashboard.onrender.com/)
 - Back-end: [kernel528-WeLoveMovies-back-end](https://dashboard.render.com/web/srv-cu60jl56l47c73btmg3g)
-- Database: [kernel528-welovemovies-pg18](https://dashboard.render.com/d/dpg-das8d2h7lnhs738243o0-a)
+- Database: [kernel528-welovemovies-pg18](https://dashboard.render.com/d/dpg-dbed893rjlhs73faub1g-a)
 
 ## Quick Monthly Refresh Checklist
 
@@ -172,3 +172,11 @@ activation instructions.
 - September 2026: PostgreSQL 18 replacement `dpg-das8d2h7lnhs738243o0-a`
   (development and production reseeded; backend external-TLS configuration,
   redeploy, dashboard resume, and smoke validation completed)
+- October 2026: PostgreSQL 18.6 replacement `dpg-dbed893rjlhs73faub1g-a`;
+  production refresh completed with 5 migrations and 6 seed files. Validated
+  counts: 16 movies, 3 theaters, 112 reviews, 7 critics, and 48 movie-theater
+  links. Pan's Labyrinth, Spirited Away, and Up poster URLs validated. Release
+  `3.0.6`; backend commit `4dc70e70348e8bed06604f28958ba2edb8fc0d25`, deploy
+  `dep-dbegokjncjis73e6tg2g`; dashboard commit
+  `ef525f0bc4dfcc49642add0b6bb6aa2ec979cab0`, deploy
+  `dep-dbegnh0ae00c73d3l010`. Both services live and public smoke checks passed.

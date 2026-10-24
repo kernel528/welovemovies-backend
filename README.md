@@ -5,7 +5,7 @@ This repository contains the source code for the We Love Movies Capstone to the 
 
 ## Current Baseline
 
-- Release candidate: `3.0.6` (2026-10-24); tag pending review and promotion.
+- Latest release: `3.0.6` (2026-10-24; monthly PostgreSQL refresh and reseed).
 - Security status: Node.js `22.23.4`; `npm audit` reports zero vulnerabilities
   after the 2026-10-24 remediation.
 - CI/CD status: Docker validation, development image publishing, tagged release
