@@ -1,4 +1,4 @@
-FROM node:22.15.0-bookworm AS dependencies
+FROM node:22.23.4-bookworm AS dependencies
 
 WORKDIR /app
 
@@ -20,11 +20,15 @@ FROM test AS runtime-dependencies
 
 RUN npm prune --omit=dev
 
-FROM node:22.15.0-bookworm-slim AS runtime
+FROM node:22.23.4-bookworm-slim AS runtime
 
 WORKDIR /app
 
 ENV NODE_ENV=production
+
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY package.json package-lock.json ./
 COPY --from=runtime-dependencies /app/node_modules ./node_modules
